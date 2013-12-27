@@ -4,7 +4,6 @@ from werkzeug.wrappers import Request, Response
 from werkzeug.wsgi import SharedDataMiddleware
 import os
 
-from pool import Pool
 import sys
 
 class LFServer(object):
@@ -28,19 +27,22 @@ if __name__=='__main__':
 	from twisted.web.wsgi import WSGIResource
 	from twisted.internet import reactor
 	from twisted.web.static import File
+	#from autobahn.resource import WSGIRootResource
 
 	if len(sys.argv)>1:
 		lib=sys.argv[1]
 	else:
 		lib='library.json'
 
-	app=CPServer(lib)
+	app=LFServer(lib)
 
 	local_root=os.path.join(os.path.dirname(__file__), '../')
 
-	root = WSGIResource(reactor, reactor.getThreadPool(),app)
-	root.putChild("content", File(os.path.join(local_root,'content')))
-	root.putChild("static", File(os.path.join(local_root,'static')))
+	site = WSGIResource(reactor, reactor.getThreadPool(),app)
+	content = File(os.path.join(local_root,'content'))
+	static = File(os.path.join(local_root,'static'))
+
+	root = WSGIRootResource(site,{'content':content,'static':static})
 
 	reactor.listenTCP(9501, Site(root))
 	reactor.run()
