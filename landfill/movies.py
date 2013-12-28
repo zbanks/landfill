@@ -13,7 +13,7 @@ def app(config,args,request):
 def watch(config,args,request):
 	conn=db_connect(config)
 	c=conn.cursor()
-	c.execute('SELECT id,title FROM movies WHERE id={0}'.format(int(args['id'])))
+	c.execute('SELECT id,filename,title FROM movies WHERE id={0}'.format(int(args['id'])))
 	movie_info=c.fetchone()
 	conn.close()
 	if movie_info is None:

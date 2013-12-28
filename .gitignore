@@ -1,4 +1,6 @@
 landfill/library.db
+landfill/testing
+content
 
 *.py[cod]
 

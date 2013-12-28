@@ -6,6 +6,7 @@ from werkzeug.exceptions import HTTPException
 from jinja2 import Environment,FileSystemLoader
 import os
 
+import settings
 import home
 import movies
 
@@ -13,8 +14,8 @@ template_path = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = Environment(loader=FileSystemLoader(template_path),autoescape=True)
 
 config={
-	'db':'library.db',
-	'jinja_env':jinja_env
+	'db':settings.DB,
+	'jinja_env':jinja_env,
 }
 
 url_map = Map([
