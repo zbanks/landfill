@@ -1,44 +1,46 @@
 #!/usr/bin/python
 
-from werkzeug.wrappers import Request, Response
-from werkzeug.wsgi import SharedDataMiddleware
+from werkzeug.wrappers import Request,Response
+from werkzeug.routing import Map, Rule
+from werkzeug.exceptions import HTTPException
+from jinja2 import Environment,FileSystemLoader
 import os
 
-import sys
+import home
+import movies
 
-class LFServer(object):
-	def __init__(self,database):
-		self.database=database
+template_path = os.path.join(os.path.dirname(__file__), 'templates')
+jinja_env = Environment(loader=FileSystemLoader(template_path),autoescape=True)
 
-	def dispatch_request(self,request):
-		return Response("hallo media server")
+config={
+	'db':'library.db',
+	'jinja_env':jinja_env
+}
 
-	def wsgi_app(self, environ, start_response):
-		request = Request(environ)
-		response = self.dispatch_request(request)
-		return response(environ, start_response)
+url_map = Map([
+    Rule('/', endpoint=home.app),
+    Rule('/movie', endpoint=movies.app),
+    Rule('/movie/<int:id>', endpoint=movies.watch),
+])
 
-	def __call__(self, environ, start_response):
-		return self.wsgi_app(environ,start_response)
-
+def application(environ, start_response):
+	urls = url_map.bind_to_environ(environ)
+	try:
+		endpoint, args = urls.match()
+	except HTTPException, e:
+		return e(environ, start_response)
+	return endpoint(config,args,environ)(environ, start_response)
 
 if __name__=='__main__':
 	from twisted.web.server import Site
 	from twisted.web.wsgi import WSGIResource
 	from twisted.internet import reactor
 	from twisted.web.static import File
-	#from autobahn.resource import WSGIRootResource
-
-	if len(sys.argv)>1:
-		lib=sys.argv[1]
-	else:
-		lib='library.json'
-
-	app=LFServer(lib)
+	from autobahn.resource import WSGIRootResource
 
 	local_root=os.path.join(os.path.dirname(__file__), '../')
 
-	site = WSGIResource(reactor, reactor.getThreadPool(),app)
+	site = WSGIResource(reactor, reactor.getThreadPool(),application)
 	content = File(os.path.join(local_root,'content'))
 	static = File(os.path.join(local_root,'static'))
 

@@ -1,0 +1,13 @@
+<html>
+<head>
+<title>Movies</title>
+</head>
+<body>
+<h1>Movies</h1>
+<ul>
+{% for movie in movies %}
+<li><a href="/movie/{{ movie[0] }}">{{ movie[1] }}</a></li>
+{% endfor %}
+</ul>
+</body>
+</html>
