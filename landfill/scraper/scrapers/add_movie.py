@@ -1,9 +1,11 @@
+from scraper import Scraper
 import settings
 import tempfile
 import sqlite3
 import subprocess
 import os
 import shutil
+import threading
 
 def title2file(title):
 		acceptable_chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789()'
@@ -11,10 +13,16 @@ def title2file(title):
 
 BASEPATH=os.path.join(os.path.dirname(__file__),'../')
 
-class AddMovie(object):
-	def __init__(self,local_file,info):
+class AddMovie(Scraper,threading.Thread):
+	TYPE_STRING='add_movie'
+
+	def add(self,local_file,info):
+		threading.Thread.__init__(self)
+		self.daemon=True
 		self.local_file=local_file
 		self.info=info
+
+		self.start()
 
 	def run(self):
 		self.info['filename']=title2file(self.info['title'])
@@ -39,5 +47,3 @@ class AddMovie(object):
 			os.unlink(tf.name)
 			conn.close()
 
-if __name__=='__main__':
-	AddMovie('../testing/diehard_clip.avi',{'title':'Die Hard','year':1988}).run()

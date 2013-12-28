@@ -1,4 +1,4 @@
-from add import AddMovie
+from add_movie import AddMovie
 import requests
 import re
 import json
