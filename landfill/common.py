@@ -6,4 +6,6 @@ def page(config,template_name,context={},mimetype='text/html'):
 	return Response(t.render(context), mimetype=mimetype)
 
 def db_connect(config):
-	return sqlite3.connect(config['db'])
+	conn=sqlite3.connect(config['db'])
+	conn.row_factory = sqlite3.Row
+	return conn

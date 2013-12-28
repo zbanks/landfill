@@ -6,7 +6,7 @@
 <h1>Movies</h1>
 <ul>
 {% for movie in movies %}
-<li><a href="/movie/{{ movie[0] }}">{{ movie[1] }}</a></li>
+<li><a href="/movie/{{ movie['id'] }}">{{ movie['title'] }}</a></li>
 {% endfor %}
 </ul>
 </body>

@@ -1,11 +1,11 @@
 <html>
 <head>
-<title>Watch {{ movie[2] }} online!</title>
+<title>Watch {{ movie['title'] }} online!</title>
 </head>
 <body>
-<h1>Watch {{ movie[2] }} online!</h1>
+<h1>Watch {{ movie['title'] }} online!</h1>
 <ul>
-<a href='/content/movies/{{ movie[0] }}/{{ movie[1] }}'>{{ movie[2] }}</a>
+<a href='/content/movies/{{ movie['id'] }}/{{ movie['filename'] }}'>{{ movie['title'] }}</a>
 </ul>
 </body>
 </html>
