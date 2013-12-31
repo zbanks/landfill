@@ -3,11 +3,7 @@ import requests
 import re
 import json
 
-def get_omdb_info(imdb):
-	m=re.match(r'(?:http://)?(?:www\.)?imdb\.com/title/(tt\d+)/',imdb)
-	if m is None:
-		raise Exception('Not a valid IMDB link')
-	imdb_id=m.groups()[0]
+def get_omdb_info(imdb_id):
 	omdb=requests.get('http://www.omdbapi.com/?i={0}'.format(imdb_id)).text
 	j=json.loads(omdb)
 	if j['Response']!='True':
@@ -27,4 +23,4 @@ def add_movie_from_imdb(local_file,imdb):
 	return add_movie(local_file,get_omdb_info(imdb))
 
 if __name__=='__main__':
-	print add_movie_from_imdb('bbtest.mkv','http://www.imdb.com/title/tt0903747/')
+	print add_movie_from_imdb('bbtest.mkv','tt0903747')
