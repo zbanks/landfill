@@ -8,7 +8,7 @@ class Scraper:
 		self.add(**args)
 
 	def intrinsics(self):
-		return {'type':self.parent.TYPE_STRING,'uid':self.uid}
+		return {'type':self.TYPE_STRING,'uid':self.uid}
 
 	def _describe(self):
 		return dict(self.intrinsics().items()+self.describe().items())

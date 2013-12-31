@@ -4,9 +4,12 @@ import re
 import json
 
 class AddFromIMDB(AddMovie):
-	def __init__(self,local_file,imdb):
+	TYPE_STRING='add_imdb'
+
+	def add(self,local_file,imdb):
 		self.local_file=local_file
 		self.imdb=imdb
+		self.go()
 
 	def run(self):
 		m=re.match(r'(?:http://)?(?:www\.)?imdb\.com/title/(tt\d+)/',self.imdb)
@@ -28,5 +31,5 @@ class AddFromIMDB(AddMovie):
 			self.info['thumb']=p
 		AddMovie.run(self)
 
-if __name__=='__main__':
-	AddFromIMDB('../testing/diehard_clip.avi','http://www.imdb.com/title/tt0095016/?ref_=nv_sr_1').run()
+	def describe(self):
+		return {}

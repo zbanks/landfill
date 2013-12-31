@@ -2,6 +2,7 @@ import threading
 import time
 
 from scrapers.add_movie import AddMovie
+from scrapers.add_imdb import AddFromIMDB
 
 import json
 import os
@@ -9,8 +10,8 @@ import os
 BASEPATH=os.path.join(os.path.dirname(__file__),'..')
 
 class Pool(object):
-	params={'content_dir':os.path.join(BASEPATH,'../content')}
-	scrapers=[AddMovie]
+	params={'content_dir':os.path.join(BASEPATH,'../content'),'base_path':BASEPATH}
+	scrapers=[AddMovie,AddFromIMDB]
 
 	def __init__(self):
 		self.uid=0
