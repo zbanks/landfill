@@ -24,7 +24,7 @@ def get_omdb_info(imdb):
 	return info
 
 def add_movie_from_imdb(local_file,imdb):
-	add_movie(local_file,get_omdb_info(imdb))
+	return add_movie(local_file,get_omdb_info(imdb))
 
 if __name__=='__main__':
-	add_movie_from_imdb('bbtest.mkv','http://www.imdb.com/title/tt0903747/')
+	print add_movie_from_imdb('bbtest.mkv','http://www.imdb.com/title/tt0903747/')

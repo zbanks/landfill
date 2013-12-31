@@ -31,7 +31,8 @@ def add_movie(local_file,info):
 		values=[p[1] for p in prune]
 		
 		c.execute('INSERT INTO movies ({0}) values ({1})'.format(','.join(keys),','.join(['?']*len(values))),[str(v) for v in values])
-		target=os.path.join(BASEPATH,settings.CONTENT_DIR,'movies',str(c.lastrowid),info['filename'])
+		insertion=c.lastrowid
+		target=os.path.join(BASEPATH,settings.CONTENT_DIR,'movies',str(insertion),info['filename'])
 		os.makedirs(os.path.dirname(target))
 		shutil.copy(tf.name,target)
 		conn.commit()
@@ -39,3 +40,4 @@ def add_movie(local_file,info):
 		os.unlink(tf.name)
 		conn.close()
 
+	return insertion
