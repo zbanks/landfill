@@ -4,7 +4,8 @@ import magic
 
 def is_movie(f):
 	m=magic.from_file(f)
-	return ('video:' in m and 'audio:' in m) or ('matroska' in m)
+	# dammit brian
+	return ('video:' in m and 'audio:' in m) or ('matroska' in m) or ('MPEG v4' in m)
 
 def get_movie_from_torrent(torrent):
 	MAX_VIDEOS=4 # If a torrent has more than four videos, it is unlikely to be a movie

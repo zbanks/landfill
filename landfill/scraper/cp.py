@@ -23,5 +23,9 @@ def get_torrent(cesspool,url):
 
 	return uid
 
+def rm_torrent(cesspool,uid):
+	cp=CPBot(cesspool)
+	cp.assert_success(cp.doCommand({"cmd":"rm","args":{"uid":uid}}))
+
 if __name__=='__main__':
 	get_torrent('http://localhost:9500/cmd','magnet:?xt=urn:btih:0d067e6a15a75fa1d562a78c3409d20907488fcb&dn=Die+Hard+%5B1988%5D+DvdRip+%5BEng%5D+-+Thizz&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Ftracker.publicbt.com%3A80&tr=udp%3A%2F%2Ftracker.istole.it%3A6969&tr=udp%3A%2F%2Ftracker.ccc.de%3A80&tr=udp%3A%2F%2Fopen.demonii.com%3A1337')

@@ -11,10 +11,12 @@ import os
 from email.mime.text import MIMEText
 import smtplib
 
-me="landfill@localhost"
-cp_url="http://localhost:9500/cmd"
-cp_local=os.path.join(os.path.dirname(__file__),'/home/eric/cesspool/downloads')
-lf_url="http://localhost:9501/"
+me="download@musicazoo.mit.edu"
+cp_url="http://musicazoo.mit.edu:9500/cesspool/cmd"
+cp_local=os.path.join(os.path.dirname(__file__),'/home/dump/cesspool/downloads')
+lf_url="http://musicazoo.mit.edu:9500/landfill/"
+
+os.umask(0002)
 
 (sender,subj,body)=from_email.parse_email(sys.stdin)
 
@@ -23,9 +25,9 @@ def send_mail(body):
 	msg['Subject']="Re: {0}".format(subj)
 	msg['From']=me
 	msg['To']=sender
-	print msg.as_string()
-	#s = smtplib.SMTP('localhost')
-	#s.sendmail(me, [sender], msg.as_string())
+	#print msg.as_string()
+	s = smtplib.SMTP('localhost')
+	s.sendmail(me, [sender], msg.as_string())
 
 try:
 	useful=from_email.find_useful(body)
@@ -42,8 +44,12 @@ try:
 	local_torrent=os.path.join(cp_local,str(uid))
 	movie_file=add_torrent.get_movie_from_torrent(local_torrent)
 	lf_uid=add_movie.add_movie(movie_file,info)
+
+	cp.rm_torrent(cp_url,uid)
+
 	link=lf_url+"movie/"+str(lf_uid)
 	send_mail("Finished! {0}".format(link))
 
 except Exception as e:
 	send_mail("An error occurred. {0}".format(str(e)))
+	#raise

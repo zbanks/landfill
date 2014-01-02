@@ -14,7 +14,7 @@ template_path = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = Environment(loader=FileSystemLoader(template_path),autoescape=True)
 
 config={
-	'db':settings.DB,
+	'db':os.path.join(os.path.dirname(__file__),settings.DB),
 	'jinja_env':jinja_env,
 }
 

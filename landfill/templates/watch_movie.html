@@ -1,11 +1,20 @@
 <html>
 <head>
 <title>Watch {{ movie['title'] }} online!</title>
+<link href="../static/assets/video-js.css" rel="stylesheet">
+<script src="../static/assets/video.js"></script>
+<script>
+  videojs.options.flash.swf = "../static/assets/video-js.swf"
+</script>
 </head>
 <body>
 <h1>Watch {{ movie['title'] }} online!</h1>
-<ul>
-<a href='/content/movies/{{ movie['id'] }}/{{ movie['filename'] }}'>{{ movie['title'] }}</a>
-</ul>
+<p>
+<video id="example_video_1" class="video-js vjs-default-skin"
+  controls preload="auto" width="640" height="264"
+  data-setup='{"example_option":true}'> 
+    <source src="../content/movies/{{ movie['id'] }}/{{ movie['filename'] }}" type='video/mp4' />
+</video></p>
+<p><a href='../content/movies/{{ movie['id'] }}/{{ movie['filename'] }}'>Download</a></p>
 </body>
 </html>

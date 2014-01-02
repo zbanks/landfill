@@ -5,15 +5,16 @@ import sqlite3
 import subprocess
 import os
 import shutil
-import threading
+import stat
 
 def title2file(title):
-		acceptable_chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789()'
-		return (''.join([l for l in title if l in acceptable_chars]))+'.mp4'
+	acceptable_chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789()'
+	return (''.join([l for l in title if l in acceptable_chars]))+'.mp4'
 
 
 def add_movie(local_file,info):
 	info['filename']=title2file(info['title'])
+	print os.path.join(BASEPATH,settings.DB)
 	conn=sqlite3.connect(os.path.join(BASEPATH,settings.DB))
 	tf=tempfile.NamedTemporaryFile(delete=False)
 	try:
@@ -35,9 +36,11 @@ def add_movie(local_file,info):
 		target=os.path.join(BASEPATH,settings.CONTENT_DIR,'movies',str(insertion),info['filename'])
 		os.makedirs(os.path.dirname(target))
 		shutil.copy(tf.name,target)
+		os.chmod(target,stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH | stat.S_IWUSR | stat.S_IWGRP)
 		conn.commit()
 	finally:
 		os.unlink(tf.name)
 		conn.close()
 
 	return insertion
+
